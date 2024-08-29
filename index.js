@@ -57,8 +57,8 @@ const routes = require('./routes/index')
 app.use(routes)
 //sudo firewall-cmd --permanent --add-port=3030/tcp
 
-const dbUser = "sendOrderToOperator"//process.env.DB_USER 
-const dbPass = "nsKgWk35STzKpOpy"//process.env.DB_PASS
+const dbUser = process.env.DB_USER 
+const dbPass = process.env.DB_PASS
 
 mongoose.connect(`mongodb+srv://${dbUser}:${dbPass}@cluster0.xlgi8.mongodb.net/?retryWrites=true&w=majority`).then(() => {
 
