@@ -55,6 +55,7 @@ app.use(express.json())
 
 const routes = require('./routes/index')
 app.use(routes)
+//sudo firewall-cmd --permanent --add-port=3030/tcp
 
 const dbUser = "sendOrderToOperator"//process.env.DB_USER 
 const dbPass = "nsKgWk35STzKpOpy"//process.env.DB_PASS

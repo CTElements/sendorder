@@ -23,11 +23,12 @@ async function sendFiles(linkpdf, linkxml, key) {
         client.ftp.usePassiveMode = true;
 
         await client.access({
-            host: "br30.hostgator.com.br",//process.env.HOSTVENDEMMIAFTP
-            user: "nelson@api.elements.com.br",//process.env.USERVENDEMMIAFT
-            password: "123!@#Cont",//process.env.PASSWORDVENDEMMIAFTP
+            host: process.env.HOSTVENDEMMIAFTP,
+            user: process.env.USERVENDEMMIAFTP,
+            password: process.env.PASSWORDVENDEMMIAFTP,
             secure: false
         });
+
         // Processamento do primeiro arquivo
         await downloadFile(linkpdf, localFilePathpdf);
         await client.ensureDir(serverFileDirpdf);
