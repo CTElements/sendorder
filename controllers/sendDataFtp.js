@@ -13,7 +13,7 @@ async function sendFiles(linkpdf, linkxml, key) {
 
     const localFilePathxml = path.join(TEMP_DIR, `${key}-nfe.xml`);
     const filenamexml = `${key}-nfe.xml`;
-    const serverFileDirxml = `/FILIAL_importacao_bk`;
+    const serverFileDirxml = `/FILIAL_importacao`;
     try {
         console.log('Starting FTP connection...');
         client = new ftp.Client();
