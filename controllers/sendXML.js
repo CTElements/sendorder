@@ -8,10 +8,8 @@ const sendFiles = require('../controllers/sendDataFtp')
 
 async function sendDataForVapt(res, data, invoice_number){
     try {
-        console.log("send data to vapt")
         const xmlContent = data.xmlContent
         const token = await tokenVapt()
-        //return res.status(200).json({status: 200,msg:"success"})
         const response = await axios.post('https://vector.log.br/api/app/vapt/post-order-elements', xmlContent, {
             method: 'POST',
             headers: {
@@ -19,7 +17,6 @@ async function sendDataForVapt(res, data, invoice_number){
                 'Content-Type': 'application/xml' 
             },
         });
-        console.log(response.data)
         const invoice = await Invoice.registerInvoice(invoice_number, 'pending', 'vapt')
         return res.status(200).json({ msg: response.data.success, invoice })
 
@@ -60,8 +57,7 @@ async function getXMLToInvoice(id, token, attempt = 1) {
 
 async function sendDataForVendemmia(res, chaveAcesso, linkPDF, linkxml, invoice_number) {
    try {
-       console.log("send data to vendemmia")
-       let key = "test_"+chaveAcesso 
+       let key = chaveAcesso 
        var sendFileFtp = await sendFiles(linkPDF, linkxml, key)
        if(sendFileFtp.status !== 200){
            return res.status(200).json({ msg: sendFileFtp.msg })
@@ -69,8 +65,6 @@ async function sendDataForVendemmia(res, chaveAcesso, linkPDF, linkxml, invoice_
        const invoice = await Invoice.registerInvoice(invoice_number, 'pending','vendemmia') 
        return res.status(200).json({ msg: sendFileFtp.msg, invoice })
    } catch (error) {
-       console.log("error data to vendemmia")
-       console.log(error)
        return res.status(200).send(error) 
    }
 }
@@ -100,8 +94,6 @@ module.exports = {
             var chaveAcesso = invoice.chaveAcesso 
             var linkPDF = invoice.linkPDF 
             var linkxml = invoice.xml
-            
-            //return res.status(200).json(invoice)
             return await sendDataForVendemmia(res, chaveAcesso, linkPDF, linkxml, invoice_number)
         }
     } catch (error) {
