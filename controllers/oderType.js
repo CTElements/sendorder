@@ -95,6 +95,12 @@ var naturezaOperacaoVendas = [
         "situacao": 1,
         "padrao": 0,
         "descricao": "Venda por ordem triangular (PJ)"
+    },
+    {
+        "id": 5582899291,
+        "situacao": 1,
+        "padrao": 0,
+        "descricao": "Remessa de mercadoria ou bem para conserto ou reparo"
     }
 ]
 
