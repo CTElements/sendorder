@@ -5,6 +5,6 @@ const sendXML = require('../controllers/sendXML')
 router.post('/sendXML', sendXML.sendXML)
 
 router.get('/', (req, res) => {
-   res.status(200).json({status: 200, msg:"Api running..."})
+   res.status(200).json({status: 200, msg:"Api running...", version: 2.0 })
 })
 module.exports = router
