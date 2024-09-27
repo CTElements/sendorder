@@ -81,10 +81,15 @@ module.exports = {
             return res.status(200).json({ status: 500, msg: xmlData.msg })
         }
         var invoice = xmlData.invoice
-        const situacao = invoice.situacao 
-        if(situacao !== 6){
+        const situacao = invoice.situacao
+        const isOpenBox = invoice?.transporte?.transportador?.nome.includes('OPEN BOX') 
+        if (situacao !== 6){
             console.log(`invoice status: ${situacao}`)
             return res.status(200).json({ status: 500, situacao: situacao, msg:"O status da nota deve estar como Emitida." })
+        }
+
+        if (isOpenBox) {
+            return res.status(200).json({ status: 500, msg: "Esse produto é OPEN BOX não poder ser enviado para operador" })
         }
         var invoice_number = invoice.numero
         var transportName = invoice?.transporte.transportador.nome.toLowerCase()
@@ -102,4 +107,3 @@ module.exports = {
     }
  }
 }
-
