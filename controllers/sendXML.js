@@ -6,7 +6,7 @@ const orderType = require('./oderType')
 const Invoice = require('../controllers/resgiterInvoice')
 const sendFiles = require('../controllers/sendDataFtp')
 
-async function sendDataForVapt(res, data, invoice_number){
+async function sendDataForVapt(res, data, invoice_number, tenantToken){
     try {
         const xmlContent = data.xmlContent
         const token = await tokenVapt()
@@ -17,7 +17,7 @@ async function sendDataForVapt(res, data, invoice_number){
                 'Content-Type': 'application/xml' 
             },
         });
-        const invoice = await Invoice.registerInvoice(invoice_number, 'pending', 'vapt')
+        const invoice = await Invoice.registerInvoice(invoice_number, 'pending', 'vapt', tenantToken)
         return res.status(200).json({ msg: response.data.success, invoice })
 
     } catch (error) {
@@ -55,14 +55,14 @@ async function getXMLToInvoice(id, token, attempt = 1) {
     }
 }
 
-async function sendDataForVendemmia(res, chaveAcesso, linkPDF, linkxml, invoice_number) {
+async function sendDataForVendemmia(res, chaveAcesso, linkPDF, linkxml, invoice_number, tenantToken) {
    try {
        let key = chaveAcesso 
        var sendFileFtp = await sendFiles(linkPDF, linkxml, key)
        if(sendFileFtp.status !== 200){
            return res.status(200).json({ msg: sendFileFtp.msg })
        }
-       const invoice = await Invoice.registerInvoice(invoice_number, 'pending','vendemmia') 
+       const invoice = await Invoice.registerInvoice(invoice_number, 'pending', 'vendemmia', tenantToken) 
        return res.status(200).json({ msg: sendFileFtp.msg, invoice })
    } catch (error) {
        return res.status(200).send(error) 
@@ -72,6 +72,7 @@ module.exports = {
  async sendXML(req, res){
     try { 
         const data = req.body
+        var tenantToken = 'a8d8a0d988af51b8d2cf25357e3ff95f765d74c1e57d4a86b7e132a094004a94'
         var invoiceId = req.body?.id
         var invoiceInit = data?.retorno?.notasfiscais[0]?.notafiscal 
         var id = !invoiceId ? invoiceInit.id : invoiceId 
@@ -94,12 +95,12 @@ module.exports = {
         var invoice_number = invoice.numero
         var transportName = invoice?.transporte.transportador.nome.toLowerCase()
         if(transportName.includes('vapt')){
-            return await sendDataForVapt(res, xmlData, invoice_number) 
+            return await sendDataForVapt(res, xmlData, invoice_number, tenantToken) 
         }else{
             var chaveAcesso = invoice.chaveAcesso 
             var linkPDF = invoice.linkPDF 
             var linkxml = invoice.xml
-            return await sendDataForVendemmia(res, chaveAcesso, linkPDF, linkxml, invoice_number)
+            return await sendDataForVendemmia(res, chaveAcesso, linkPDF, linkxml, invoice_number, tenantToken)
         }
     } catch (error) {
         console.log(error)
