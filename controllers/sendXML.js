@@ -28,7 +28,7 @@ async function sendDataForVapt(res, data, invoice_number, tenantToken){
 }
 
 async function getXMLToInvoice(id, token, attempt = 1) {
-    const maxAttempts = 10; 
+    const maxAttempts = 2; 
     try {
         const link = `https://bling.com.br/Api/v3/nfe/${id}`;
         const response = await axios.get(link, {
