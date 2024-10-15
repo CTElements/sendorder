@@ -110,5 +110,4 @@ var naturezaOperacaoVendas = [
     }
 ]
 
-
 module.exports = naturezaOperacaoVendas
