@@ -101,6 +101,12 @@ var naturezaOperacaoVendas = [
         "situacao": 1,
         "padrao": 0,
         "descricao": "Remessa de mercadoria ou bem para conserto ou reparo"
+    },
+    {
+        "id": 8959570967,
+        "situacao": 1,
+        "padrao": 0,
+        "descricao": "Bonificação de Mercadoria Consumidor Final (002)"
     }
 ]
 
